@@ -1,0 +1,83 @@
+Building tracer
+Sending build context to Docker daemon  56.32kB
+Step 1/10 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/10 : RUN mkdir -p /opt/build
+ ---> Using cache
+ ---> 520b683207b0
+Step 3/10 : WORKDIR /opt/build
+ ---> Using cache
+ ---> 73ec0139f37e
+Step 4/10 : COPY ./setup-base.sh /opt/build/
+ ---> Using cache
+ ---> 2a22de1089bb
+Step 5/10 : RUN ./setup-base.sh
+ ---> Using cache
+ ---> 35ccbb583ca8
+Step 6/10 : COPY ./install-datadog.sh /opt/build/
+ ---> Using cache
+ ---> 9708cf377857
+Step 7/10 : RUN scl enable devtoolset-7 ./install-datadog.sh
+ ---> Using cache
+ ---> ac52d423b856
+Step 8/10 : COPY ./Makefile ./tracer.cpp /opt/build/
+ ---> baa0508359a2
+Step 9/10 : RUN scl enable devtoolset-7 make
+ ---> Running in 516d423f1aa6
+g++ \
+    -o tracer \
+	-I ./dd-opentracing-cpp/include \
+	-I ./dd-opentracing-cpp/deps/include \
+	tracer.cpp \
+	-ldd_opentracing
+[91m/[0m[91m/[0m[91musr[0m[91m/[0m[91mlocal[0m[91m/[0m[91mlib/libdd_opentracing.so: undefined reference to `VTT for std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::compare(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace_aux(unsigned long, unsigned long, unsigned long, char)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::random_device::_M_init(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct(unsigned long, char)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `vtable for std::__cxx11::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::assign(char const*)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::push_back(char)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `vtable for std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_istringstream<char, std::char_traits<char>, std::allocator<char> >::~basic_istringstream()@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `vtable for std::__cxx11::basic_istringstream<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::runtime_error::runtime_error(char const*)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)())@GLIBCXX_3.4.22'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `vtable for std::__cxx11::basic_ostringstream<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::_V2::error_category::equivalent(int, std::error_condition const&) const@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*,[0m[91m unsigned long)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::reserve(unsigned long)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::_V2::error_category::~error_category()@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `VTT for std::__cxx11::basic_istringstream<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::_V2::error_category::_M_message[abi:cxx11](int) const@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::substr(unsigned long, unsigned long) const@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::resize(unsigned long, char)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__throw_out_of_range_fmt(char const*, ...)@GLIBCXX_3.4.20'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::runtime_error::runtime_error(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::_M_sync(char*, unsigned long, unsigned long)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::runtime_error::runtime_error(char const*)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string()@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::_V2::generic_category()@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::find(char, unsigned long) const@GLIBCXX_3.4.21'
+//usr/local[0m[91m/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_ostringstream<char, std::char_traits<char>, std::allocator<char> >::~basic_ostringstream()@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `VTT for std::__cxx11::basic_ostringstream<char, std::char_traits<char>, std::allocator<char> >@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::logic_error::logic_error(char const*)@GLIBCXX_3.4.21'
+//usr[0m[91m/local/lib/libdd_opentracing.so: undefined reference to `typeinfo for std::_V2::error_category@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference[0m[91m to `operator delete(void*, unsigned long)@CXXABI_1.3.9'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::runtime_error::runtime_error(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::thread::_State::~_State()@GLIBCXX_3.4.22'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::_V2::error_category::equivalent(std::error_code const&, int) const@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::compare(char const*) const@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `typeinfo for std::thread::_State@GLIBCXX_3.4.22'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >::~basic_stringstream()@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::runtime_error::runtime_error(std::runtime_error const&)@GLIBCXX_3.4.21'
+//usr/local/lib/libdd_opentracing.so: undefined reference to `std::__cxx11::collate<char> const& std::use_facet<std::__cxx11::collate<char> >(std::locale const&)@GLIBCXX_3.4.21'
+collect2: error: ld returned 1 exit status
+[0m[91mmake: *** [Makefile:2: tracer] Error 1
+[0mThe command '/bin/sh -c scl enable devtoolset-7 make' returned a non-zero code: 2
+Service 'tracer' failed to build : Build failed

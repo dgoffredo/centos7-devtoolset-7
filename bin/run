@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -e
+
+usage() {
+    cat - <<END_USAGE
+C++ tracing example
+
+usage:
+    DD_API_KEY=KEY $0
+        Install dd-opentracing-cpp and use it to build a minimal example
+        tracing application.
+        Then bring up the Datadog agent and run the example.
+        Use the specified DD_API_KEY to authenticate with Datadog.
+
+    $0 --help
+    $0 -h
+        Print this message.
+END_USAGE
+}
+
+if [ $# -gt 1 ]; then
+    >&2 usage
+    exit 1
+elif [ "$1" = --help ]; then
+    usage
+    exit
+elif [ "$1" = -h ]; then
+    usage
+    exit
+elif [ $# -ne 0 ]; then
+    >&2 usage
+    exit 1
+fi
+
+if [ -z "$DD_API_KEY" ]; then
+    >&2 echo "error: The DD_API_KEY environment variable must be set to the value of your Datadog API key."
+    exit 1
+fi
+
+repo=$(git rev-parse --show-toplevel)
+cd "$repo"
+
+docker-compose up --build
